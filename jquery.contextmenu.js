@@ -6,7 +6,6 @@
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
 		if (options.items) {
-			console.log(this);
 			methods.attach.call(this.get(), options.items, menu);
 		}
 		$(menu).hide().addClass('context-menu').appendTo('body');
