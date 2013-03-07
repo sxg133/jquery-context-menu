@@ -6,7 +6,7 @@
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
 		if (options.items) {
-			methods.attach(options.items, menu);
+			methods.attach.call(this[0], options.items, menu);
 		}
 		$(menu).hide().addClass('context-menu').appendTo('body');
 
@@ -29,19 +29,41 @@
 	}
 	// attach new items to menu
 	methods.attach = function(items, menu) {
+		// allow for arrays or single object
 		if (!(items instanceof Array)) {
 			items = [items];
 		}
+		// passed in menu for other functions in plugin
 		if (!menu) {
 			var menu = $(this).data('menu');
 		}
-		for (var i=0, ii=items.length; i<ii; i++) {
-			var menuitem = document.createElement('div');
-			menuitem.innerHTML = items[i].label;
-			menuitem.onclick = items[i].action;
-			$(menuitem).addClass('context-menu-item');
-			$(menu).append(menuitem);
+
+		var createClick = function(func, elem) {
+			return function() { func.call(elem); };
 		}
+		var clickedElement = this;
+		// remove context menu and context menu items if they are included in selector
+		var selector = $(this).selector;
+		if (selector.contains('div') || selector.contains('.context-menu')) {
+			for (var i=clickedElement.length-1; i>=0; i--) {
+				var jelem = $(clickedElement[i]);
+				if (jelem.hasClass('context-menu') || jelem.hasClass('context-menu-item')) {
+					clickedElement.splice(i, 1);
+				}
+			}
+		}
+
+		// create menu item divs
+		var menuitems = [];
+		for (var i=0, ii=items.length; i<ii; i++) {
+			var curitem = items[i];
+			var menuitem = document.createElement('div');
+			menuitem.innerHTML = curitem.label;
+			menuitem.onclick = createClick(curitem.action, clickedElement);
+			$(menuitem).addClass('context-menu-item');
+			menuitems.push(menuitem);
+		}
+		$(menu).append(menuitems);
 		return this;
 	}
 	methods.detach = function(items) {

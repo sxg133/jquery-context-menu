@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>jQuery context menu example 1</title>
+		<meta charset="UTF-8" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script type="text/javascript" src="jquery.contextmenu.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('div').contextmenu({
 					items: [
-						{label: 'test', action: function(){alert('test');}},
-						{label: 'test2', action: function(){alert('test2');}},
+						{label: 'Change to Green', action: function(){$(this).css('background-color','green');}},
+						{label: 'Remove This', action: function(){alert('This should have been removed!');}}
 					]
 				});
 				$('div').contextmenu('attach',
-					{label: 'test3', action: function(){alert('test3');}}
+					{label: 'Change to Red', action: function(){$(this).css('background-color','red');}}
 				);
-				$('div').contextmenu('detach', 'test2');
+				$('div').contextmenu('detach', 'Remove This');
 			});
 		</script>
 		<style type="text/css">
