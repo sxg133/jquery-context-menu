@@ -29,6 +29,9 @@
 	}
 	// attach new items to menu
 	methods.attach = function(items, menu) {
+		if (!(items instanceof Array)) {
+			items = [items];
+		}
 		if (!menu) {
 			var menu = $(this).data('menu');
 		}
