@@ -6,13 +6,7 @@
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
 		if (options.items) {
-			for (var i=0, ii=options.items.length; i<ii; i++) {
-				var menuitem = document.createElement('div');
-				menuitem.innerHTML = options.items[i].label;
-				menuitem.onclick = options.items[i].action;
-				$(menuitem).addClass('context-menu-item');
-				$(menu).append(menuitem);
-			}
+			methods.attach(options.items, menu);
 		}
 		$(menu).hide().addClass('context-menu').appendTo('body');
 
@@ -34,7 +28,30 @@
 		});
 	}
 	// attach new items to menu
-	methods.attach = function(items) {
+	methods.attach = function(items, menu) {
+		if (!menu) {
+			var menu = $(this).data('menu');
+		}
+		for (var i=0, ii=items.length; i<ii; i++) {
+			var menuitem = document.createElement('div');
+			menuitem.innerHTML = items[i].label;
+			menuitem.onclick = items[i].action;
+			$(menuitem).addClass('context-menu-item');
+			$(menu).append(menuitem);
+		}
+		return this;
+	}
+	methods.detach = function(items) {
+		var menu = $(this).data('menu');
+		for (var i=0, ii=items.length; i<ii; i++) {
+			var menuitems = $(menu).children();
+			for(var j=menuitems.length-1; j>=0; j--) {
+				if (menuitems[j].innerHTML == items[i]) {
+					$(menuitems[j]).remove();
+				}
+			}
+		}
+		return this;
 	}
 	
 	$.fn.contextmenu = function(method) {
