@@ -1,14 +1,19 @@
 .context-menu {
-	background-color: #D3D3D3;
+	background-color: #E8E8E8;
 	position: absolute;
 	min-width: 150px;
 	overflow-x: hidden;
+	border-radius: 2px;
+	font-family: arial;
 }
 
 .context-menu-item {
-	padding: 5px 5px 5px 10px;
+	padding: 7px 5px 7px 10px;
 	cursor: pointer;
 	width: 100%;
+	border-style: solid;
+	border-width: 0 0 1px;
+	border-color: black;
 }
 
 .context-menu-item:hover {

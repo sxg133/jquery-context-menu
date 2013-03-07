@@ -44,7 +44,7 @@
 		var clickedElement = this;
 		// remove context menu and context menu items if they are included in selector
 		var selector = $(this).selector;
-		if (selector.contains('div') || selector.contains('.context-menu')) {
+		if (selector.indexOf('div') != -1 || selector.indexOf('.context-menu') != -1) {
 			for (var i=clickedElement.length-1; i>=0; i--) {
 				var jelem = $(clickedElement[i]);
 				if (jelem.hasClass('context-menu') || jelem.hasClass('context-menu-item')) {
