@@ -45,6 +45,9 @@
 		return this;
 	}
 	methods.detach = function(items) {
+		if (typeof items === 'string') {
+			items = [items];
+		}
 		var menu = $(this).data('menu');
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var menuitems = $(menu).children();
