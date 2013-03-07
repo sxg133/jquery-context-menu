@@ -6,7 +6,8 @@
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
 		if (options.items) {
-			methods.attach.call(this[0], options.items, menu);
+			console.log(this);
+			methods.attach.call(this.get(), options.items, menu);
 		}
 		$(menu).hide().addClass('context-menu').appendTo('body');
 
@@ -66,7 +67,9 @@
 		$(menu).append(menuitems);
 		return this;
 	}
+	// remove item from menu
 	methods.detach = function(items) {
+		// allow single item removal or array
 		if (typeof items === 'string') {
 			items = [items];
 		}
