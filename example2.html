@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery context menu example 2</title>
+		<meta charset="UTF-8" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.contextmenu.js"></script>
+		<link rel="stylesheet" href="jquery.contextmenu.style.css" />
+		<style type="text/css">
+
+			th {
+				background-color: #E2E2E2;
+			}
+
+			td, th {
+				border: solid thin black;
+				padding: 5px 10px;
+			}
+		</style>
+		<script type="text/javascript">
+
+			function markForDelete() {
+				$(this).css('background-color', '#FFA8A8');
+			}
+
+			function highlight() {
+				$(this).css('background-color', '#FFFFA3');
+			}
+
+			$(function() {
+				$('tbody tr').contextmenu({
+					items: [
+						{label: 'Mark for Delete', action: markForDelete},
+						{label: 'Highlight', action: highlight}
+					]
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Important Data</h2>
+		<h2>My Favorite Candy</h2>
+		<table cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Rating</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>M&amp;M's</td>
+					<td>5</td>
+					<td>Lots of colors</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Snickers</td>
+					<td>4</td>
+					<td>Looks like poop, but still tastes pretty good</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>Skittles</td>
+					<td>3</td>
+					<td>Oh Skittles</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>Thin Mints</td>
+					<td>2</td>
+					<td>Stop, Hammertime</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>Milk Duds</td>
+					<td>3.5</td>
+					<td>You're a wizard, Harry</td>
+				</tr>
+				<tr>
+					<td>6</td>
+					<td>The telltale choclate sushi</td>
+					<td>?</td>
+					<td>This isn't even candy</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
