@@ -22,7 +22,9 @@
 		return this.each(function() {
 			$(this).data('menu', menu);
 			this.oncontextmenu = function(e) {
-				$($(this).data('menu')).css('left', e.pageX).css('top', e.pageY).show();
+				var contextmenu = $($(this).data('menu'));
+				contextmenu.css('left', e.pageX).css('top', e.pageY).show();
+				contextmenu.data('last-clicked', this);
 				e.preventDefault();
 			}
 		});
@@ -39,18 +41,11 @@
 		}
 
 		var createClick = function(func, elem) {
-			return function() { func.call(elem); };
-		}
-		var clickedElement = this;
-		// remove context menu and context menu items if they are included in selector
-		var selector = $(this).selector;
-		if (selector.indexOf('div') != -1 || selector.indexOf('.context-menu') != -1) {
-			for (var i=clickedElement.length-1; i>=0; i--) {
-				var jelem = $(clickedElement[i]);
-				if (jelem.hasClass('context-menu') || jelem.hasClass('context-menu-item')) {
-					clickedElement.splice(i, 1);
-				}
-			}
+			return function() { 
+				var contextmenu = $(elem).data('menu');
+				var clicked = $(contextmenu).data('last-clicked');
+				func.call( clicked );
+			};
 		}
 
 		// create menu item divs
@@ -59,7 +54,7 @@
 			var curitem = items[i];
 			var menuitem = document.createElement('div');
 			menuitem.innerHTML = curitem.label;
-			menuitem.onclick = createClick(curitem.action, clickedElement);
+			menuitem.onclick = createClick(curitem.action, this);
 			$(menuitem).addClass('context-menu-item');
 			menuitems.push(menuitem);
 		}
