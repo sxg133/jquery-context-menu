@@ -23,8 +23,8 @@
 			$(this).data('menu', menu);
 			this.oncontextmenu = function(e) {
 				var contextmenu = $($(this).data('menu'));
-				contextmenu.css('left', e.pageX).css('top', e.pageY).show();
 				contextmenu.data('last-clicked', this);
+				contextmenu.css('left', e.pageX).css('top', e.pageY).show();
 				e.preventDefault();
 			}
 		});
