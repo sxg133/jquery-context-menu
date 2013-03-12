@@ -58,4 +58,18 @@ Initialize the context menu with (or without) some default items:
 			'Highlight'
 		]);
 
+### Menu Options
 
+When you intialize the menu, you can pass in the following options.
+
+*	_id_ - Specify the ID attribute for the context menu.
+
+*	_items_	- An initial list of menu items.  See the Menu Item Options section for additional details.
+
+### Menu Item Options
+
+**Required**
+
+*	_label_	- The text displayed on the menu for the item.
+
+*	_action_ - Pointer to the click function for the menu item.

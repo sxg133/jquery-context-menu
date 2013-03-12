@@ -5,6 +5,9 @@
 	methods.init = function(options) {
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
+		if (options.id) {
+			menu.id = options.id;
+		}
 		if (options.items) {
 			methods.attach.call(this.get(), options.items, menu);
 		}

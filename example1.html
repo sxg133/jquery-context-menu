@@ -9,6 +9,7 @@
 		<script type="text/javascript">
 			$(function() {
 				$('div').contextmenu({
+					id: 'myContextMenu',
 					items: [
 						{label: 'Change to Green', action: function(){$(this).css('background-color','green');}},
 						{label: 'Remove This', action: function(){alert('This should have been removed!');}}
