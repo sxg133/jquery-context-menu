@@ -8,10 +8,11 @@
 		if (options.id) {
 			menu.id = options.id;
 		}
+		menu.className = ('context-menu ' + (options.className || '')).trim();
 		if (options.items) {
 			methods.attach.call(this.get(), options.items, menu);
 		}
-		$(menu).hide().addClass('context-menu').appendTo('body');
+		$(menu).hide().appendTo('body');
 
 		// bind onmousedown to document so we can hide all menus
 		if (!window.bindedclick) {
