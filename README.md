@@ -73,3 +73,7 @@ When you intialize the menu, you can pass in the following options.
 *	_label_	- The text displayed on the menu for the item.
 
 *	_action_ - Pointer to the click function for the menu item.
+
+**Optional**
+
+*	_className_ - Add a custom class(s) to the menu item.

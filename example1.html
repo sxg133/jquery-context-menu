@@ -11,7 +11,13 @@
 				$('div').contextmenu({
 					id: 'myContextMenu',
 					items: [
-						{label: 'Change to Green', action: function(){$(this).css('background-color','green');}},
+						{
+							label: 'Change to Green', 
+							action: function(){
+								$(this).css('background-color','green');
+							},
+							className: 'myMenuItem'
+						},
 						{label: 'Remove This', action: function(){alert('This should have been removed!');}}
 					]
 				});

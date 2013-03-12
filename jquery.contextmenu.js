@@ -58,7 +58,8 @@
 			var menuitem = document.createElement('div');
 			menuitem.innerHTML = curitem.label;
 			menuitem.onclick = createClick(curitem.action, this);
-			$(menuitem).addClass('context-menu-item');
+			menuitem.className = ('context-menu-item ' + (curitem.className || '')).trim();
+
 			menuitems.push(menuitem);
 		}
 		$(menu).append(menuitems);
