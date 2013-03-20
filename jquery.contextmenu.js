@@ -1,5 +1,8 @@
 (function( $ ) {
 
+	const DATA_KEY_MENU = 'menu';
+	const DATA_KEY_LAST_CLICKED = 'last-clicked';
+
 	var methods = {};
 	// initialize context menu
 	methods.init = function(options) {
@@ -24,10 +27,10 @@
 
 		// attach oncontextmenu event
 		return this.each(function() {
-			$(this).data('menu', menu);
+			$(this).data(DATA_KEY_MENU, menu);
 			this.oncontextmenu = function(e) {
-				var contextmenu = $($(this).data('menu'));
-				contextmenu.data('last-clicked', this);
+				var contextmenu = $($(this).data(DATA_KEY_MENU));
+				contextmenu.data(DATA_KEY_LAST_CLICKED, this);
 				contextmenu.css('left', e.pageX).css('top', e.pageY).show();
 				e.preventDefault();
 			}
@@ -41,13 +44,13 @@
 		}
 		// passed in menu for other functions in plugin
 		if (!menu) {
-			var menu = $(this).data('menu');
+			var menu = $(this).data(DATA_KEY_MENU);
 		}
 
 		var createClick = function(func, elem) {
 			return function() { 
-				var contextmenu = $(elem).data('menu');
-				var clicked = $(contextmenu).data('last-clicked');
+				var contextmenu = $(elem).data(DATA_KEY_MENU);
+				var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
 				func.call( clicked );
 			};
 		}
@@ -72,7 +75,7 @@
 		if (typeof items === 'string') {
 			items = [items];
 		}
-		var menu = $(this).data('menu');
+		var menu = $(this).data(DATA_KEY_MENU);
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var menuitems = $(menu).children();
 			for(var j=menuitems.length-1; j>=0; j--) {
