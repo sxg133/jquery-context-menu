@@ -17,7 +17,7 @@
 		}
 		$(menu).hide().appendTo('body');
 
-		// bind onmousedown to document so we can hide all menus
+		// bind onmousedown to window so we can hide all menus
 		if (!window.bindedclick) {
 			window.onclick = function() {
 				$('.context-menu').hide();
