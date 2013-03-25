@@ -1,7 +1,6 @@
 (function( $ ) {
 
-	const DATA_KEY_MENU = 'menu';
-	const DATA_KEY_LAST_CLICKED = 'last-clicked';
+	var DATA_KEY_MENU = 'menu', DATA_KEY_LAST_CLICKED = 'last-clicked';
 
 	var methods = {};
 	// initialize context menu
