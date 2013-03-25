@@ -55,6 +55,9 @@
 			};
 		}
 
+		var $parent = $(menu).parent();
+		$(menu).detach();
+
 		// create menu item divs
 		var menuitems = [];
 		for (var i=0, ii=items.length; i<ii; i++) {
@@ -67,6 +70,7 @@
 			menuitems.push(menuitem);
 		}
 		$(menu).append(menuitems);
+		$parent.append(menu);
 		return this;
 	}
 	// remove item from menu
@@ -76,6 +80,8 @@
 			items = [items];
 		}
 		var menu = $(this).data(DATA_KEY_MENU);
+		var $parent = $(menu).parent();
+		$(menu).detach();
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var menuitems = $(menu).children();
 			for(var j=menuitems.length-1; j>=0; j--) {
@@ -84,6 +90,7 @@
 				}
 			}
 		}
+		$parent.append(menu);
 		return this;
 	}
 	
