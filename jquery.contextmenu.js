@@ -1,19 +1,30 @@
-(function( $ ) {
+(function($) {
 
+	// constants for jQuery data (not using "const" keyword for IE compatibility)
 	var DATA_KEY_MENU = 'menu', DATA_KEY_LAST_CLICKED = 'last-clicked';
 
 	var methods = {};
+
 	// initialize context menu
 	methods.init = function(options) {
+
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
+
+		// check if 'id' option is specified for menu
 		if (options.id) {
 			menu.id = options.id;
 		}
+
+		// set CSS classes for menu
 		menu.className = ('context-menu ' + (options.className || '')).trim();
+
+		// attach any initial items
 		if (options.items) {
 			methods.attach.call(this.get(), options.items, menu);
 		}
+
+		// hide menu and append to the body of the page
 		$(menu).hide().appendTo('body');
 
 		// bind onmousedown to window so we can hide all menus
@@ -36,17 +47,21 @@
 			}
 		});
 	}
+
 	// attach new items to menu
 	methods.attach = function(items, menu) {
+
 		// allow for arrays or single object
 		if (!(items instanceof Array)) {
 			items = [items];
 		}
+
 		// passed in menu for other functions in plugin
 		if (!menu) {
 			var menu = $(this).data(DATA_KEY_MENU);
 		}
 
+		// function creates the click event for a menu item
 		var createClick = function(func, elem) {
 			return function() { 
 				var contextmenu = $(elem).data(DATA_KEY_MENU);
@@ -55,6 +70,7 @@
 			};
 		}
 
+		// detach from parent for performance
 		var $parent = $(menu).parent();
 		$(menu).detach();
 
@@ -69,19 +85,28 @@
 
 			menuitems.push(menuitem);
 		}
+
+		// add items to menu and reattach to parent
 		$(menu).append(menuitems);
 		$parent.append(menu);
+
 		return this;
 	}
+
 	// remove item from menu
 	methods.detach = function(items) {
+
 		// allow single item removal or array
 		if (typeof items === 'string') {
 			items = [items];
 		}
+
+		// detach menu for performance
 		var menu = $(this).data(DATA_KEY_MENU);
 		var $parent = $(menu).parent();
 		$(menu).detach();
+
+		// remove menu items
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var menuitems = $(menu).children();
 			for(var j=menuitems.length-1; j>=0; j--) {
@@ -90,7 +115,10 @@
 				}
 			}
 		}
+
+		// reattach menu
 		$parent.append(menu);
+
 		return this;
 	}
 	
@@ -104,4 +132,4 @@
 		}
 	}
 
-}) ( jQuery );
+})(jQuery);
