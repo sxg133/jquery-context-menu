@@ -27,14 +27,20 @@
 				$(this).css('background-color', '#FFFFA3');
 			}
 
+			function clear() {
+				$(this).css('background-color', '#FFFFFF');
+			}
+
 			$(function() {
 				$('#table-body').find('tr').contextmenu({
 					items: [
 						{label: 'Mark for Delete', action: markForDelete},
-						{label: 'Highlight', action: highlight}
+						{label: 'Highlight', action: highlight},
+						{label: 'Clear', action: clear}
 					]
 				});
 			});
+			
 		</script>
 	</head>
 	<body>
