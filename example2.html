@@ -28,7 +28,7 @@
 			}
 
 			$(function() {
-				$('tbody tr').contextmenu({
+				$('#table-body').find('tr').contextmenu({
 					items: [
 						{label: 'Mark for Delete', action: markForDelete},
 						{label: 'Highlight', action: highlight}
@@ -49,7 +49,7 @@
 					<th>Description</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="table-body">
 				<tr>
 					<td>1</td>
 					<td>M&amp;M's</td>
