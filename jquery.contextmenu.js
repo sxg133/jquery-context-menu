@@ -26,11 +26,12 @@
 
 		// attach oncontextmenu event
 		return this.each(function() {
-			$(this).data(DATA_KEY_MENU, menu);
+			var $this = $(this);
+			$this.data(DATA_KEY_MENU, menu);
 			this.oncontextmenu = function(e) {
-				var contextmenu = $($(this).data(DATA_KEY_MENU));
-				contextmenu.data(DATA_KEY_LAST_CLICKED, this);
-				contextmenu.css('left', e.pageX).css('top', e.pageY).show();
+				var $contextmenu = $($this.data(DATA_KEY_MENU));
+				$contextmenu.data(DATA_KEY_LAST_CLICKED, this);
+				$contextmenu.css('left', e.pageX).css('top', e.pageY).show();
 				e.preventDefault();
 			}
 		});
