@@ -60,11 +60,13 @@ Initialize the context menu with (or without) some default items:
 
 ### Menu Options
 
-When you intialize the menu, you can pass in the following options.
+When you initialize the menu, you can pass in the following options.
 
 *	_id_ - Specify the ID attribute for the context menu.
 
 *	_items_	- An initial list of menu items.  See the Menu Item Options section for additional details.
+
+*	_className_ - Add a custom CSS class to the context menu.
 
 ### Menu Item Options
 
@@ -76,4 +78,4 @@ When you intialize the menu, you can pass in the following options.
 
 **Optional**
 
-*	_className_ - Add a custom class(s) to the menu item.
+*	_className_ - Add a custom CSS class(s) to the menu item.

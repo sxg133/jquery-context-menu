@@ -3,6 +3,11 @@
 	// constants for jQuery data (not using "const" keyword for IE compatibility)
 	var DATA_KEY_MENU = 'menu', DATA_KEY_LAST_CLICKED = 'last-clicked';
 
+	var settings = {
+		contextMenuClass = 'context-menu',			// default css class for context menus
+		contextMenuItemClass = 'context-menu-item'	// default css class for context menu items
+	}
+
 	var methods = {};
 
 	// initialize context menu
@@ -17,7 +22,7 @@
 		}
 
 		// set CSS classes for menu
-		menu.className = ('context-menu ' + (options.className || '')).trim();
+		menu.className = (settings.contextMenuClass + ' ' + (options.className || '')).trim();
 
 		// attach any initial items
 		if (options.items) {
@@ -30,7 +35,7 @@
 		// bind onmousedown to window so we can hide all menus
 		if (!window.bindedclick) {
 			window.onclick = function() {
-				$('.context-menu').hide();
+				$('.' + settings.contextMenuClass).hide();
 			}
 			window.bindedclick = true;
 		}
@@ -81,7 +86,7 @@
 			var menuitem = document.createElement('div');
 			menuitem.innerHTML = curitem.label;
 			menuitem.onclick = createClick(curitem.action, this);
-			menuitem.className = ('context-menu-item ' + (curitem.className || '')).trim();
+			menuitem.className = (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim();
 
 			menuitems.push(menuitem);
 		}
