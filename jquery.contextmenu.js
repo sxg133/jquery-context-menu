@@ -4,8 +4,8 @@
 	var DATA_KEY_MENU = 'menu', DATA_KEY_LAST_CLICKED = 'last-clicked';
 
 	var settings = {
-		contextMenuClass = 'context-menu',			// default css class for context menus
-		contextMenuItemClass = 'context-menu-item'	// default css class for context menu items
+		contextMenuClass: 'context-menu',			// default css class for context menus
+		contextMenuItemClass: 'context-menu-item'	// default css class for context menu items
 	}
 
 	var methods = {};
