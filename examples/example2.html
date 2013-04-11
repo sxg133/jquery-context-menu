@@ -23,8 +23,8 @@
 				$(this).css('background-color', '#FFA8A8');
 			}
 
-			function highlight() {
-				$(this).css('background-color', '#FFFFA3');
+			function highlight(color) {
+				$(this).css('background-color', color);
 			}
 
 			function clear() {
@@ -32,13 +32,18 @@
 			}
 
 			$(function() {
-				$('#table-body').find('tr').contextmenu({
+				var rows = $('#table-body').find('tr');
+				$(rows).contextmenu({
 					items: [
 						{label: 'Mark for Delete', action: markForDelete},
-						{label: 'Highlight', action: highlight},
+						{label: 'Highlight'},
 						{label: 'Clear', action: clear}
 					]
 				});
+				$(rows).contextmenu('attachSubItem', 'Highlight', [
+					{label: 'yellow', action: function() {highlight('#FFFFA3');}},
+					{label: 'green', action: function() {highlight('#BEFFA3');}}
+				]);
 			});
 			
 		</script>

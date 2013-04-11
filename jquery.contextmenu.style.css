@@ -1,5 +1,4 @@
 .context-menu {
-	background-color: #EDEDED;
 	position: absolute;
 	min-width: 150px;
 	border-radius: 2px;
@@ -9,13 +8,33 @@
 }
 
 .context-menu-item {
-	padding: 7px 5px 7px 10px;
+	background-color: #EDEDED;
+	padding: 7px 20px 7px 10px;
 	cursor: pointer;
 	border-style: inset;
 	border-width: 0 0 2px;
 	border-color: #CFCFCF;
+	position: relative;
 }
 
 .context-menu-item:hover {
 	background-color: #BEDAE7;
+}
+
+.context-menu-item:hover .submenu {
+	display: block;
+}
+
+.submenu {
+	display: none;
+	position: absolute;
+	left: 100%;
+	top: 0;
+	border-left: solid 1px black;
+}
+
+.has-submenu span {
+	padding-right: 6px;
+    position: absolute;
+    right: 0;
 }

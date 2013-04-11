@@ -4,8 +4,11 @@
 	var DATA_KEY_MENU = 'menu', DATA_KEY_LAST_CLICKED = 'last-clicked';
 
 	var settings = {
-		contextMenuClass: 'context-menu',			// default css class for context menus
-		contextMenuItemClass: 'context-menu-item'	// default css class for context menu items
+		contextMenuClass: 'context-menu',			// css class for context menus
+		contextMenuItemClass: 'context-menu-item',	// css class for context menu items
+		submenuClass: 'submenu',					// css class for submenu
+		submenuItemClass: 'submenu-item',			// css class for submenu item
+		hasSubmenuClass: 'has-submenu',				// css class for menu items that have submenus
 	}
 
 	var methods = {};
@@ -32,12 +35,10 @@
 		// hide menu and append to the body of the page
 		$(menu).hide().appendTo('body');
 
-		// bind onmousedown to window so we can hide all menus
-		if (!window.bindedclick) {
-			window.onclick = function() {
-				$('.' + settings.contextMenuClass).hide();
-			}
-			window.bindedclick = true;
+		// bind click to window so we can hide all menus
+		window.onclick = function() {
+			console.log(menu);
+			$(menu).hide();
 		}
 
 		// attach oncontextmenu event
@@ -118,6 +119,52 @@
 				if (menuitems[j].innerHTML == items[i]) {
 					$(menuitems[j]).remove();
 				}
+			}
+		}
+
+		// reattach menu
+		$parent.append(menu);
+
+		return this;
+	}
+
+	// add submenu
+	methods.attachSubItem = function(parent, items) {
+
+		// allow single item removal or array
+		if (typeof items === 'string') {
+			items = [items];
+		}
+
+		// detach menu for performance
+		var menu = $(this).data(DATA_KEY_MENU);
+		var $parent = $(menu).parent();
+		$(menu).detach();
+
+		// remove menu items
+		var menuitems = $(menu).children();
+		for (var i=0, ii=menuitems.length; i<ii; i++) {
+			if (menuitems[i].innerHTML == parent) {
+				var submenu;
+				if (!$(menuitems[i]).has('div').length) {
+					submenu = $('<div></div>')
+						.addClass(settings.submenuClass)
+						.addClass(settings.contextMenuClass);
+					$(menuitems[i]).addClass(settings.hasSubmenuClass)
+						.append('<span>►</span>');
+				}
+				var subitems = [];
+				for (var j=0, jj=items.length; j<jj; j++) {
+					var $subitem = $('<div>' + items[j].label + '</div>');
+					$subitem.addClass(settings.submenuItemClass)
+						.addClass(settings.contextMenuItemClass)
+						.addClass(items[i].className || '');
+					// TODO : ADD CLICK EVENT
+					subitems.push($subitem);
+				}
+				$(submenu).append(subitems);
+				$(menuitems[i]).append(submenu);
+				break;
 			}
 		}
 
