@@ -132,7 +132,7 @@
 	methods.attachSubItem = function(parent, items) {
 
 		// allow single item removal or array
-		if (typeof items === 'string') {
+		if (!(items instanceof Array)) {
 			items = [items];
 		}
 
