@@ -11,6 +11,17 @@
 		hasSubmenuClass: 'has-submenu',				// css class for menu items that have submenus
 	}
 
+	// function creates the click event for a menu item or sub-menu item
+	var createClick = function(func, elem) {
+		return function(e) {
+			var contextmenu = $(elem).data(DATA_KEY_MENU);
+			var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
+			if (func) {
+				func.call( clicked );
+			}
+		};
+	}
+
 	var methods = {};
 
 	// initialize context menu
@@ -37,7 +48,6 @@
 
 		// bind click to window so we can hide all menus
 		window.onclick = function() {
-			console.log(menu);
 			$(menu).hide();
 		}
 
@@ -67,15 +77,6 @@
 			var menu = $(this).data(DATA_KEY_MENU);
 		}
 
-		// function creates the click event for a menu item
-		var createClick = function(func, elem) {
-			return function() { 
-				var contextmenu = $(elem).data(DATA_KEY_MENU);
-				var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
-				func.call( clicked );
-			};
-		}
-
 		// detach from parent for performance
 		var $parent = $(menu).parent();
 		$(menu).detach();
@@ -88,7 +89,6 @@
 			menuitem.innerHTML = curitem.label;
 			menuitem.onclick = createClick(curitem.action, this);
 			menuitem.className = (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim();
-
 			menuitems.push(menuitem);
 		}
 
@@ -159,7 +159,7 @@
 					$subitem.addClass(settings.submenuItemClass)
 						.addClass(settings.contextMenuItemClass)
 						.addClass(items[i].className || '');
-					// TODO : ADD CLICK EVENT
+					$subitem.click( createClick(items[j].action, this) );
 					subitems.push($subitem);
 				}
 				$(submenu).append(subitems);

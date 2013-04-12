@@ -23,8 +23,8 @@
 				$(this).css('background-color', '#FFA8A8');
 			}
 
-			function highlight(color) {
-				$(this).css('background-color', color);
+			function highlight(elem, color) {
+				$(elem).css('background-color', color);
 			}
 
 			function clear() {
@@ -41,8 +41,8 @@
 					]
 				});
 				$(rows).contextmenu('attachSubItem', 'Highlight', [
-					{label: 'yellow', action: function() {highlight('#FFFFA3');}},
-					{label: 'green', action: function() {highlight('#BEFFA3');}}
+					{label: 'yellow', action: function() {highlight(this, '#FFFFA3');}},
+					{label: 'green', action: function() {highlight(this, '#BEFFA3');}}
 				]);
 			});
 			
