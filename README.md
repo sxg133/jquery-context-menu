@@ -49,14 +49,25 @@ Initialize the context menu with (or without) some default items:
 
 *	**detach**
 
-	Remove an item (by label) from the context menu.
+	Remove an item(s) (by label) from the context menu.
 
 		$('table tr').contextmenu('detach', 'Mark for Delete');
 
-		$('table tr').contextmenu('attach', [
+		$('table tr').contextmenu('detach', [
 			'Mark for Delete',
 			'Highlight'
 		]);
+
+*	**attachSubItem**
+
+	Add a submenu item(s) to an existing menu item.
+
+		$('table tr').contextmenu('attachSubItem', 'Highlight', [
+			{label: 'yellow', action: highlightYellow },
+			{label: 'green', action: highlightGreen }
+		]);
+
+	*Only one level of submenus is currently supported.
 
 ### Menu Options
 
@@ -74,7 +85,7 @@ When you initialize the menu, you can pass in the following options.
 
 *	_label_	- The text displayed on the menu for the item.
 
-*	_action_ - Pointer to the click function for the menu item.
+*	_action_ - Pointer to the click function for the menu item.  You may exclude this option if you plan on adding a submenu to the item.
 
 **Optional**
 
