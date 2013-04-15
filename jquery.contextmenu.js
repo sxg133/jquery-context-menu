@@ -22,6 +22,29 @@
 		};
 	}
 
+	// function to retrieve the sub item from a menu item path
+	var getMenuItem = function(menu, itemPath) {
+		var $children = $(menu).children('div');
+		for (var i=0, ii=itemPath.length; i<ii; i++) {
+			var j, jj;
+			for (j=0, jj=$children.length; j<jj; j++) {
+				if ($children.eq(j).html() == itemPath[i]) {
+					if (i == ii-1) {
+						return $children.eq(j);
+					}
+					break;
+				}
+			}
+			console.log($children);
+			var $nextParent = $children.eq(j);
+			if ($nextParent.has('div').length) {
+				$children = $nextParent.find('div').children('li');
+			} else {
+				$.error('Could not find submenu in item ' + itemPath[i]);
+			}
+		}
+	}
+
 	var methods = {};
 
 	// initialize context menu
@@ -129,7 +152,11 @@
 	}
 
 	// add submenu
-	methods.attachSubItem = function(parent, items) {
+	methods.attachSubItem = function(parentPath, items) {
+
+		if (!(parentPath instanceof Array)) {
+			parentPath = [parentPath];
+		}
 
 		// allow single item removal or array
 		if (!(items instanceof Array)) {
@@ -138,38 +165,40 @@
 
 		// detach menu for performance
 		var menu = $(this).data(DATA_KEY_MENU);
-		var $parent = $(menu).parent();
+		var $menuParent = $(menu).parent();
 		$(menu).detach();
 
-		// remove menu items
-		var menuitems = $(menu).children();
-		for (var i=0, ii=menuitems.length; i<ii; i++) {
-			if (menuitems[i].innerHTML == parent) {
-				var submenu;
-				if (!$(menuitems[i]).has('div').length) {
-					submenu = $('<div></div>')
-						.addClass(settings.submenuClass)
-						.addClass(settings.contextMenuClass);
-					$(menuitems[i]).addClass(settings.hasSubmenuClass)
-						.append('<span>►</span>');
-				}
-				var subitems = [];
-				for (var j=0, jj=items.length; j<jj; j++) {
-					var $subitem = $('<div>' + items[j].label + '</div>');
-					$subitem.addClass(settings.submenuItemClass)
-						.addClass(settings.contextMenuItemClass)
-						.addClass(items[i].className || '');
-					$subitem.click( createClick(items[j].action, this) );
-					subitems.push($subitem);
-				}
-				$(submenu).append(subitems);
-				$(menuitems[i]).append(submenu);
-				break;
-			}
+		// find menu item to add to
+		var $parentMenuItem = getMenuItem(menu, parentPath);
+
+		// get or create submenu
+		var submenu;
+		if (!$parentMenuItem.has('div').length) {
+			submenu = $('<div></div>')
+				.addClass(settings.submenuClass)
+				.addClass(settings.contextMenuClass);
+			$parentMenuItem.addClass(settings.hasSubmenuClass)
+				.append('<span>►</span>');
+		} else {
+			submenu = $parentMenuItem.find('div');
+		}
+		$(submenu).detach();
+
+		var subitems = [];
+		for (var i=0, ii=items.length; i<ii; i++) {
+			var $subitem = $('<div>' + items[i].label + '</div>');
+			$subitem.addClass(settings.submenuItemClass)
+				.addClass(settings.contextMenuItemClass)
+				.addClass(items[i].className || '');
+			$subitem.click( createClick(items[i].action, this) );
+			subitems.push($subitem);
 		}
 
+		$(submenu).append(subitems);
+		$parentMenuItem.append(submenu);
+
 		// reattach menu
-		$parent.append(menu);
+		$menuParent.append(menu);
 
 		return this;
 	}
