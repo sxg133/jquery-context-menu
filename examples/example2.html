@@ -42,11 +42,11 @@
 				});
 				$(rows).contextmenu('attachSubItem', 'Highlight', [
 					{label: 'yellow', action: function() {highlight(this, '#FFFFA3');}},
-					{label: 'green', action: function() {highlight(this, '#BEFFA3');}},
 					{label: 'more colors'}
 				]);
 				
 				$(rows).contextmenu('attachSubItem', ['Highlight', 'more colors'], [
+					{label: 'green', action: function() {highlight(this, '#BEFFA3');}},
 					{label: 'blue', action: function() {highlight(this, '#A3FBFF');}},
 					{label: 'orange', action: function() {highlight(this, '#FFE8A3');}},
 					{label: 'purple', action: function() {highlight(this, '#DAA3FF');}}
