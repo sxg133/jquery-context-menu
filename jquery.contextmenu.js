@@ -28,17 +28,16 @@
 		for (var i=0, ii=itemPath.length; i<ii; i++) {
 			var j, jj;
 			for (j=0, jj=$children.length; j<jj; j++) {
-				if ($children.eq(j).html() == itemPath[i]) {
+				if ($children.eq(j).children('span').eq(0).html() == itemPath[i]) {
 					if (i == ii-1) {
 						return $children.eq(j);
 					}
 					break;
 				}
 			}
-			console.log($children);
 			var $nextParent = $children.eq(j);
 			if ($nextParent.has('div').length) {
-				$children = $nextParent.find('div').children('li');
+				$children = $nextParent.find('div').children('div');
 			} else {
 				$.error('Could not find submenu in item ' + itemPath[i]);
 			}
@@ -108,11 +107,10 @@
 		var menuitems = [];
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var curitem = items[i];
-			var menuitem = document.createElement('div');
-			menuitem.innerHTML = curitem.label;
-			menuitem.onclick = createClick(curitem.action, this);
-			menuitem.className = (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim();
-			menuitems.push(menuitem);
+			var $menuitem = $('<div><span>' + curitem.label + '</span></div>');
+			$menuitem.click = createClick(curitem.action, this);
+			$menuitem.addClass( (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim() );
+			menuitems.push($menuitem);
 		}
 
 		// add items to menu and reattach to parent
@@ -178,7 +176,7 @@
 				.addClass(settings.submenuClass)
 				.addClass(settings.contextMenuClass);
 			$parentMenuItem.addClass(settings.hasSubmenuClass)
-				.append('<span>►</span>');
+				.append('<span class="menu-arrow">►</span>');
 		} else {
 			submenu = $parentMenuItem.find('div');
 		}
@@ -186,7 +184,7 @@
 
 		var subitems = [];
 		for (var i=0, ii=items.length; i<ii; i++) {
-			var $subitem = $('<div>' + items[i].label + '</div>');
+			var $subitem = $('<div><span>' + items[i].label + '</span></div>');
 			$subitem.addClass(settings.submenuItemClass)
 				.addClass(settings.contextMenuItemClass)
 				.addClass(items[i].className || '');

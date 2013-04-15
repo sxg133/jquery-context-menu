@@ -21,7 +21,7 @@
 	background-color: #BEDAE7;
 }
 
-.context-menu-item:hover .submenu {
+.context-menu-item:hover > .submenu {
 	display: block;
 }
 
@@ -33,7 +33,7 @@
 	border-left: solid 1px black;
 }
 
-.has-submenu span {
+.has-submenu span.menu-arrow {
 	padding-right: 6px;
     position: absolute;
     right: 0;
