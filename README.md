@@ -64,10 +64,17 @@ Initialize the context menu with (or without) some default items:
 
 		$('table tr').contextmenu('attachSubItem', 'Highlight', [
 			{label: 'yellow', action: highlightYellow },
-			{label: 'green', action: highlightGreen }
+			{label: 'green', action: highlightGreen },
+			{label: 'more colors'}
 		]);
 
-	*Only one level of submenus is currently supported.
+	*Now supporting multiple submenu levels by using array hierarchy:
+
+		$('table tr').contextmenu('attachSubItem', ['Highlight', 'more colors'], [
+			{label: 'blue', action: function() {highlight(this, '#A3FBFF');}},
+			{label: 'orange', action: function() {highlight(this, '#FFE8A3');}},
+			{label: 'purple', action: function() {highlight(this, '#DAA3FF');}}
+		]);
 
 ### Menu Options
 
