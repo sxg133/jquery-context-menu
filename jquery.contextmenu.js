@@ -108,7 +108,7 @@
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var curitem = items[i];
 			var $menuitem = $('<div><span>' + curitem.label + '</span></div>');
-			$menuitem.click = createClick(curitem.action, this);
+			$menuitem.click( createClick(curitem.action, this) );
 			$menuitem.addClass( (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim() );
 			menuitems.push($menuitem);
 		}
