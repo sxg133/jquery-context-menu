@@ -135,12 +135,12 @@
 
 		// remove menu items
 		for (var i=0, ii=items.length; i<ii; i++) {
-			var menuitems = $(menu).children();
-			for(var j=menuitems.length-1; j>=0; j--) {
-				if (menuitems[j].innerHTML == items[i]) {
-					$(menuitems[j]).remove();
-				}
+			var itemPath = items[i];
+			if (typeof itemPath === 'string') {
+				itemPath = [itemPath];
 			}
+			var $menuItemToRemove = getMenuItem(menu, itemPath);
+			$menuItemToRemove.remove();
 		}
 
 		// reattach menu
