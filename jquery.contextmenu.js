@@ -1,7 +1,9 @@
 (function($) {
 
 	// constants for jQuery data (not using "const" keyword for IE compatibility)
-	var DATA_KEY_MENU = 'menu', DATA_KEY_LAST_CLICKED = 'last-clicked';
+	var DATA_KEY_MENU = 'menu', 
+		DATA_KEY_LAST_CLICKED = 'last-clicked',
+		DATA_KEY_SUBMENU_TIMEOUT = 'submenu-timeout';
 
 	var settings = {
 		contextMenuClass: 'context-menu',			// css class for context menus
@@ -9,6 +11,7 @@
 		submenuClass: 'submenu',					// css class for submenu
 		submenuItemClass: 'submenu-item',			// css class for submenu item
 		hasSubmenuClass: 'has-submenu',				// css class for menu items that have submenus
+		submenuDisplayTimeout: 500					// how long the submenu displays after user mouses out of parent item
 	}
 
 	// function creates the click event for a menu item or sub-menu item
@@ -47,7 +50,10 @@
 	var methods = {};
 
 	// initialize context menu
-	methods.init = function(options) {
+	methods.init = function(userOptions) {
+
+		var options = {}
+		$.extend(options, userOptions);
 
 		// create menu context menu and attach to body
 		var menu = document.createElement('div');
@@ -177,9 +183,24 @@
 				.addClass(settings.contextMenuClass);
 			$parentMenuItem.addClass(settings.hasSubmenuClass)
 				.append('<span class="menu-arrow">►</span>');
+
+			// need to keep showing if user quickly mouses out and back in
+			$parentMenuItem.mouseenter(function() {
+				clearTimeout($parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT));
+				$(this).parent().find('.submenu:first').hide();
+				$(this).find('.submenu:first').show();
+			});
+			$parentMenuItem.mouseleave(function() {
+				var submenuHideTimeout = setTimeout(function() {
+					$parentMenuItem.find('.submenu:first').hide();
+				}, settings.submenuDisplayTimeout);
+				$parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT, submenuHideTimeout);
+			});
+
 		} else {
 			submenu = $parentMenuItem.find('div');
 		}
+
 		$(submenu).detach();
 
 		var subitems = [];

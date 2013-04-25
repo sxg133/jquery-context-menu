@@ -21,10 +21,6 @@
 	background-color: #BEDAE7;
 }
 
-.context-menu-item:hover > .submenu {
-	display: block;
-}
-
 .submenu {
 	display: none;
 	position: absolute;
