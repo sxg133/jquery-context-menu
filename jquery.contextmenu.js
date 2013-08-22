@@ -1,3 +1,5 @@
+"use strict";
+
 (function($) {
 
 	// constants for jQuery data (not using "const" keyword for IE compatibility)
