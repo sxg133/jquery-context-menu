@@ -23,6 +23,8 @@
 			var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
 			if (func) {
 				func.call( clicked );
+			} else {
+				e.stopPropagation();
 			}
 		};
 	}
