@@ -77,20 +77,20 @@
 		$(menu).hide().appendTo('body');
 
 		// bind click to window so we can hide all menus
-		window.onclick = function() {
+		window.addEventListener('click', function() {
 			$(menu).hide();
-		}
+		});
 
 		// attach oncontextmenu event
 		return this.each(function() {
 			var $this = $(this);
 			$this.data(DATA_KEY_MENU, menu);
-			this.oncontextmenu = function(e) {
+			this.addEventListener('contextmenu', function(e) {
 				var $contextmenu = $($this.data(DATA_KEY_MENU));
 				$contextmenu.data(DATA_KEY_LAST_CLICKED, this);
 				$contextmenu.css('left', e.pageX).css('top', e.pageY).show();
 				e.preventDefault();
-			}
+			});
 		});
 	}
 
