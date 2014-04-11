@@ -23,6 +23,7 @@
 			var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
 			if (func) {
 				func.call( clicked );
+				$(contextmenu).hide();
 			} else {
 				e.stopPropagation();
 			}
