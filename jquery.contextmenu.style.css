@@ -34,3 +34,8 @@
     position: absolute;
     right: 0;
 }
+
+.context-menu-icon {
+	width: 10px;
+	height: 100%;
+}

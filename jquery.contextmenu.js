@@ -13,6 +13,7 @@
 		submenuClass: 'submenu',					// css class for submenu
 		submenuItemClass: 'submenu-item',			// css class for submenu item
 		hasSubmenuClass: 'has-submenu',				// css class for menu items that have submenus
+		contextMenuIconClass: 'context-menu-icon',	// css class for menu items that have submenus
 		submenuDisplayTimeout: 500					// how long the submenu displays after user mouses out of parent item
 	}
 
@@ -50,6 +51,19 @@
 				$.error('Could not find submenu in item ' + itemPath[i]);
 			}
 		}
+	}
+
+	var buildMenuItemDom = function(item) {
+		var $menuitem = $('<div></div>');
+		var $icon = $('<div></div>')
+		if (item.icon) {
+			$icon
+				.addClass(settings.contextMenuIconClass)
+				.css('background-image', item.icon)
+				.css('display: inline-block;');
+		}
+		var $label = $('<span>' + item.label + '</span>');
+		return $menuitem.append($icon).append($label);
 	}
 
 	var methods = {};
@@ -118,7 +132,7 @@
 		var menuitems = [];
 		for (var i=0, ii=items.length; i<ii; i++) {
 			var curitem = items[i];
-			var $menuitem = $('<div><span>' + curitem.label + '</span></div>');
+			var $menuitem = buildMenuItemDom(curitem);
 			$menuitem.click( createClick(curitem.action, this) );
 			$menuitem.addClass( (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim() );
 			menuitems.push($menuitem);
@@ -182,7 +196,7 @@
 
 		// get or create submenu
 		var submenu;
-		if (!$parentMenuItem.has('div').length) {
+		if (!$parentMenuItem.has('.' + settings.submenuClass).length) {
 			submenu = $('<div></div>')
 				.addClass(settings.submenuClass)
 				.addClass(settings.contextMenuClass);
@@ -192,18 +206,18 @@
 			// need to keep showing if user quickly mouses out and back in
 			$parentMenuItem.mouseenter(function() {
 				clearTimeout($parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT));
-				$(this).parent().find('.submenu:first').hide();
-				$(this).find('.submenu:first').show();
+				$(this).parent().find('.' + settings.submenuClass + '.submenu:first').hide();
+				$(this).find('.' + settings.submenuClass + ':first').show();
 			});
 			$parentMenuItem.mouseleave(function() {
 				var submenuHideTimeout = setTimeout(function() {
-					$parentMenuItem.find('.submenu:first').hide();
+					$parentMenuItem.find('.' + settings.submenuClass + ':first').hide();
 				}, settings.submenuDisplayTimeout);
 				$parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT, submenuHideTimeout);
 			});
 
 		} else {
-			submenu = $parentMenuItem.find('div');
+			submenu = $parentMenuItem.find('.' + settings.submenuClass);
 		}
 
 		$(submenu).detach();
