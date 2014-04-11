@@ -9,7 +9,9 @@
 
 .context-menu-item {
 	background-color: #EDEDED;
-	padding: 7px 20px 7px 10px;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 10px;
 	cursor: pointer;
 	border-style: inset;
 	border-width: 0 0 2px;
@@ -19,6 +21,17 @@
 
 .context-menu-item:hover {
 	background-color: #BEDAE7;
+}
+
+.context-menu-icon {
+    width: 16px;
+	height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.context-menu-item-label {
+	margin-right: 20px;
 }
 
 .submenu {
@@ -33,9 +46,4 @@
 	padding-right: 6px;
     position: absolute;
     right: 0;
-}
-
-.context-menu-icon {
-	width: 10px;
-	height: 100%;
 }

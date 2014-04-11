@@ -8,13 +8,14 @@
 		DATA_KEY_SUBMENU_TIMEOUT = 'submenu-timeout';
 
 	var settings = {
-		contextMenuClass: 'context-menu',			// css class for context menus
-		contextMenuItemClass: 'context-menu-item',	// css class for context menu items
-		submenuClass: 'submenu',					// css class for submenu
-		submenuItemClass: 'submenu-item',			// css class for submenu item
-		hasSubmenuClass: 'has-submenu',				// css class for menu items that have submenus
-		contextMenuIconClass: 'context-menu-icon',	// css class for menu items that have submenus
-		submenuDisplayTimeout: 500					// how long the submenu displays after user mouses out of parent item
+		contextMenuClass: 'context-menu',						// css class for context menus
+		contextMenuItemClass: 'context-menu-item',				// css class for context menu items
+		contextMenuItemLabelClass: 'context-menu-item-label',	// css class for context menu item label
+		submenuClass: 'submenu',								// css class for submenu
+		submenuItemClass: 'submenu-item',						// css class for submenu item
+		hasSubmenuClass: 'has-submenu',							// css class for menu items that have submenus
+		contextMenuIconClass: 'context-menu-icon',				// css class for menu items that have submenus
+		submenuDisplayTimeout: 500								// how long the submenu displays after user mouses out of parent item
 	}
 
 	// function creates the click event for a menu item or sub-menu item
@@ -56,13 +57,14 @@
 	var buildMenuItemDom = function(item) {
 		var $menuitem = $('<div></div>');
 		var $icon = $('<div></div>')
+		$icon.addClass(settings.contextMenuIconClass)
+			.css('display', 'inline-block')
+			.html('&nbsp;');
 		if (item.icon) {
-			$icon
-				.addClass(settings.contextMenuIconClass)
-				.css('background-image', item.icon)
-				.css('display: inline-block;');
+			$icon.css('background-image', 'url(' + item.icon + ')');
 		}
 		var $label = $('<span>' + item.label + '</span>');
+		$label.addClass(settings.contextMenuItemLabelClass);
 		return $menuitem.append($icon).append($label);
 	}
 
