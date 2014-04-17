@@ -38,12 +38,16 @@
 	position: absolute;
 	left: 100%;
 	top: 0;
-	border-left: solid 1px black;
-	padding-left: 5px;
+	border-left: inset 2px #808080;
+	padding-left: 0;
 }
 
 .has-submenu span.menu-arrow {
 	padding-right: 6px;
     position: absolute;
     right: 0;
+}
+
+.submenu-item {
+	padding-left: 10px;
 }
