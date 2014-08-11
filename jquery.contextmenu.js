@@ -1,240 +1,244 @@
-"use strict";
-
+/*
+ * Author: Sahil Grover
+ * A context menu plugin for jQuery
+ */
 (function($) {
 
-	// constants for jQuery data (not using "const" keyword for IE compatibility)
-	var DATA_KEY_MENU = 'menu', 
-		DATA_KEY_LAST_CLICKED = 'last-clicked',
-		DATA_KEY_SUBMENU_TIMEOUT = 'submenu-timeout';
+    "use strict";
 
-	var settings = {
-		contextMenuClass: 'context-menu',			// css class for context menus
-		contextMenuItemClass: 'context-menu-item',	// css class for context menu items
-		submenuClass: 'submenu',					// css class for submenu
-		submenuItemClass: 'submenu-item',			// css class for submenu item
-		hasSubmenuClass: 'has-submenu',				// css class for menu items that have submenus
-		submenuDisplayTimeout: 500					// how long the submenu displays after user mouses out of parent item
-	}
+    // constants for jQuery data (not using "const" keyword for IE compatibility)
+    var DATA_KEY_MENU = 'menu',
+        DATA_KEY_LAST_CLICKED = 'last-clicked',
+        DATA_KEY_SUBMENU_TIMEOUT = 'submenu-timeout';
 
-	// function creates the click event for a menu item or sub-menu item
-	var createClick = function(func, elem) {
-		return function(e) {
-			var contextmenu = $(elem).data(DATA_KEY_MENU);
-			var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
-			if (func) {
-				func.call( clicked );
-				$(contextmenu).hide();
-			} else {
-				e.stopPropagation();
-			}
-		};
-	}
+    var settings = {
+        contextMenuClass: 'context-menu', // css class for context menus
+        contextMenuItemClass: 'context-menu-item', // css class for context menu items
+        submenuClass: 'submenu', // css class for submenu
+        submenuItemClass: 'submenu-item', // css class for submenu item
+        hasSubmenuClass: 'has-submenu', // css class for menu items that have submenus
+        submenuDisplayTimeout: 500 // how long the submenu displays after user mouses out of parent item
+    };
 
-	// function to retrieve the sub item from a menu item path
-	var getMenuItem = function(menu, itemPath) {
-		var $children = $(menu).children('div');
-		for (var i=0, ii=itemPath.length; i<ii; i++) {
-			var j, jj;
-			for (j=0, jj=$children.length; j<jj; j++) {
-				if ($children.eq(j).children('span').eq(0).html() == itemPath[i]) {
-					if (i == ii-1) {
-						return $children.eq(j);
-					}
-					break;
-				}
-			}
-			var $nextParent = $children.eq(j);
-			if ($nextParent.has('div').length) {
-				$children = $nextParent.find('div').children('div');
-			} else {
-				$.error('Could not find submenu in item ' + itemPath[i]);
-			}
-		}
-	}
+    // function creates the click event for a menu item or sub-menu item
+    var createClick = function(func, elem) {
+        return function(e) {
+            var contextmenu = $(elem).data(DATA_KEY_MENU);
+            var clicked = $(contextmenu).data(DATA_KEY_LAST_CLICKED);
+            if (func) {
+                func.call(clicked);
+                $(contextmenu).hide();
+            } else {
+                e.stopPropagation();
+            }
+        };
+    };
 
-	var methods = {};
+    // function to retrieve the sub item from a menu item path
+    var getMenuItem = function(menu, itemPath) {
+        var $children = $(menu).children('div');
+        for (var i = 0, ii = itemPath.length; i < ii; i++) {
+            var j, jj;
+            for (j = 0, jj = $children.length; j < jj; j++) {
+                if ($children.eq(j).children('span').eq(0).html() == itemPath[i]) {
+                    if (i == ii - 1) {
+                        return $children.eq(j);
+                    }
+                    break;
+                }
+            }
+            var $nextParent = $children.eq(j);
+            if ($nextParent.has('div').length) {
+                $children = $nextParent.find('div').children('div');
+            } else {
+                $.error('Could not find submenu in item ' + itemPath[i]);
+            }
+        }
+    };
 
-	// initialize context menu
-	methods.init = function(userOptions) {
+    var methods = {};
 
-		var options = {}
-		$.extend(options, userOptions);
+    // initialize context menu
+    methods.init = function(userOptions) {
 
-		// create menu context menu and attach to body
-		var menu = document.createElement('div');
+        var options = {};
+        $.extend(options, userOptions);
 
-		// check if 'id' option is specified for menu
-		if (options.id) {
-			menu.id = options.id;
-		}
+        // create menu context menu and attach to body
+        var menu = document.createElement('div');
 
-		// set CSS classes for menu
-		menu.className = (settings.contextMenuClass + ' ' + (options.className || '')).trim();
+        // check if 'id' option is specified for menu
+        if (options.id) {
+            menu.id = options.id;
+        }
 
-		// attach any initial items
-		if (options.items) {
-			methods.attach.call(this.get(), options.items, menu);
-		}
+        // set CSS classes for menu
+        menu.className = (settings.contextMenuClass + ' ' + (options.className || '')).trim();
 
-		// hide menu and append to the body of the page
-		$(menu).hide().appendTo('body');
+        // attach any initial items
+        if (options.items) {
+            methods.attach.call(this.get(), options.items, menu);
+        }
 
-		// bind click to window so we can hide all menus
-		window.addEventListener('click', function() {
-			$(menu).hide();
-		});
+        // hide menu and append to the body of the page
+        $(menu).hide().appendTo('body');
 
-		// attach oncontextmenu event
-		return this.each(function() {
-			var $this = $(this);
-			$this.data(DATA_KEY_MENU, menu);
-			this.addEventListener('contextmenu', function(e) {
-				var $contextmenu = $($this.data(DATA_KEY_MENU));
-				$contextmenu.data(DATA_KEY_LAST_CLICKED, this);
-				$contextmenu.css('left', e.pageX).css('top', e.pageY).show();
-				e.preventDefault();
-			});
-		});
-	}
+        // bind click to window so we can hide all menus
+        window.addEventListener('click', function() {
+            $(menu).hide();
+        });
 
-	// attach new items to menu
-	methods.attach = function(items, menu) {
+        // attach oncontextmenu event
+        return this.each(function() {
+            var $this = $(this);
+            $this.data(DATA_KEY_MENU, menu);
+            this.addEventListener('contextmenu', function(e) {
+                var $contextmenu = $($this.data(DATA_KEY_MENU));
+                $contextmenu.data(DATA_KEY_LAST_CLICKED, this);
+                $contextmenu.css('left', e.pageX).css('top', e.pageY).show();
+                e.preventDefault();
+            });
+        });
+    };
 
-		// allow for arrays or single object
-		if (!(items instanceof Array)) {
-			items = [items];
-		}
+    // attach new items to menu
+    methods.attach = function(items, menu) {
 
-		// passed in menu for other functions in plugin
-		if (!menu) {
-			var menu = $(this).data(DATA_KEY_MENU);
-		}
+        // allow for arrays or single object
+        if (!(items instanceof Array)) {
+            items = [items];
+        }
 
-		// detach from parent for performance
-		var $parent = $(menu).parent();
-		$(menu).detach();
+        // passed in menu for other functions in plugin
+        if (!menu) {
+            menu = $(this).data(DATA_KEY_MENU);
+        }
 
-		// create menu item divs
-		var menuitems = [];
-		for (var i=0, ii=items.length; i<ii; i++) {
-			var curitem = items[i];
-			var $menuitem = $('<div><span>' + curitem.label + '</span></div>');
-			$menuitem.click( createClick(curitem.action, this) );
-			$menuitem.addClass( (settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim() );
-			menuitems.push($menuitem);
-		}
+        // detach from parent for performance
+        var $parent = $(menu).parent();
+        $(menu).detach();
 
-		// add items to menu and reattach to parent
-		$(menu).append(menuitems);
-		$parent.append(menu);
+        // create menu item divs
+        var menuitems = [];
+        for (var i = 0, ii = items.length; i < ii; i++) {
+            var curitem = items[i];
+            var $menuitem = $('<div><span>' + curitem.label + '</span></div>');
+            $menuitem.click(createClick(curitem.action, this));
+            $menuitem.addClass((settings.contextMenuItemClass + ' ' + (curitem.className || '')).trim());
+            menuitems.push($menuitem);
+        }
 
-		return this;
-	}
+        // add items to menu and reattach to parent
+        $(menu).append(menuitems);
+        $parent.append(menu);
 
-	// remove item from menu
-	methods.detach = function(items) {
+        return this;
+    };
 
-		// allow single item removal or array
-		if (typeof items === 'string') {
-			items = [items];
-		}
+    // remove item from menu
+    methods.detach = function(items) {
 
-		// detach menu for performance
-		var menu = $(this).data(DATA_KEY_MENU);
-		var $parent = $(menu).parent();
-		$(menu).detach();
+        // allow single item removal or array
+        if (typeof items === 'string') {
+            items = [items];
+        }
 
-		// remove menu items
-		for (var i=0, ii=items.length; i<ii; i++) {
-			var itemPath = items[i];
-			if (typeof itemPath === 'string') {
-				itemPath = [itemPath];
-			}
-			var $menuItemToRemove = getMenuItem(menu, itemPath);
-			$menuItemToRemove.remove();
-		}
+        // detach menu for performance
+        var menu = $(this).data(DATA_KEY_MENU);
+        var $parent = $(menu).parent();
+        $(menu).detach();
 
-		// reattach menu
-		$parent.append(menu);
+        // remove menu items
+        for (var i = 0, ii = items.length; i < ii; i++) {
+            var itemPath = items[i];
+            if (typeof itemPath === 'string') {
+                itemPath = [itemPath];
+            }
+            var $menuItemToRemove = getMenuItem(menu, itemPath);
+            $menuItemToRemove.remove();
+        }
 
-		return this;
-	}
+        // reattach menu
+        $parent.append(menu);
 
-	// add submenu
-	methods.attachSubItem = function(parentPath, items) {
+        return this;
+    };
 
-		if (!(parentPath instanceof Array)) {
-			parentPath = [parentPath];
-		}
+    // add submenu
+    methods.attachSubItem = function(parentPath, items) {
 
-		// allow single item removal or array
-		if (!(items instanceof Array)) {
-			items = [items];
-		}
+        if (!(parentPath instanceof Array)) {
+            parentPath = [parentPath];
+        }
 
-		// detach menu for performance
-		var menu = $(this).data(DATA_KEY_MENU);
-		var $menuParent = $(menu).parent();
-		$(menu).detach();
+        // allow single item removal or array
+        if (!(items instanceof Array)) {
+            items = [items];
+        }
 
-		// find menu item to add to
-		var $parentMenuItem = getMenuItem(menu, parentPath);
+        // detach menu for performance
+        var menu = $(this).data(DATA_KEY_MENU);
+        var $menuParent = $(menu).parent();
+        $(menu).detach();
 
-		// get or create submenu
-		var submenu;
-		if (!$parentMenuItem.has('div').length) {
-			submenu = $('<div></div>')
-				.addClass(settings.submenuClass)
-				.addClass(settings.contextMenuClass);
-			$parentMenuItem.addClass(settings.hasSubmenuClass)
-				.append('<span class="menu-arrow">►</span>');
+        // find menu item to add to
+        var $parentMenuItem = getMenuItem(menu, parentPath);
 
-			// need to keep showing if user quickly mouses out and back in
-			$parentMenuItem.mouseenter(function() {
-				clearTimeout($parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT));
-				$(this).parent().find('.submenu:first').hide();
-				$(this).find('.submenu:first').show();
-			});
-			$parentMenuItem.mouseleave(function() {
-				var submenuHideTimeout = setTimeout(function() {
-					$parentMenuItem.find('.submenu:first').hide();
-				}, settings.submenuDisplayTimeout);
-				$parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT, submenuHideTimeout);
-			});
+        // get or create submenu
+        var submenu;
+        if (!$parentMenuItem.has('div').length) {
+            submenu = $('<div></div>')
+                .addClass(settings.submenuClass)
+                .addClass(settings.contextMenuClass);
+            $parentMenuItem.addClass(settings.hasSubmenuClass)
+                .append('<span class="menu-arrow">►</span>');
 
-		} else {
-			submenu = $parentMenuItem.find('div');
-		}
+            // need to keep showing if user quickly mouses out and back in
+            $parentMenuItem.mouseenter(function() {
+                clearTimeout($parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT));
+                $(this).parent().find('.submenu:first').hide();
+                $(this).find('.submenu:first').show();
+            });
+            $parentMenuItem.mouseleave(function() {
+                var submenuHideTimeout = setTimeout(function() {
+                    $parentMenuItem.find('.submenu:first').hide();
+                }, settings.submenuDisplayTimeout);
+                $parentMenuItem.data(DATA_KEY_SUBMENU_TIMEOUT, submenuHideTimeout);
+            });
 
-		$(submenu).detach();
+        } else {
+            submenu = $parentMenuItem.find('div');
+        }
 
-		var subitems = [];
-		for (var i=0, ii=items.length; i<ii; i++) {
-			var $subitem = $('<div><span>' + items[i].label + '</span></div>');
-			$subitem.addClass(settings.submenuItemClass)
-				.addClass(settings.contextMenuItemClass)
-				.addClass(items[i].className || '');
-			$subitem.click( createClick(items[i].action, this) );
-			subitems.push($subitem);
-		}
+        $(submenu).detach();
 
-		$(submenu).append(subitems);
-		$parentMenuItem.append(submenu);
+        var subitems = [];
+        for (var i = 0, ii = items.length; i < ii; i++) {
+            var $subitem = $('<div><span>' + items[i].label + '</span></div>');
+            $subitem.addClass(settings.submenuItemClass)
+                .addClass(settings.contextMenuItemClass)
+                .addClass(items[i].className || '');
+            $subitem.click(createClick(items[i].action, this));
+            subitems.push($subitem);
+        }
 
-		// reattach menu
-		$menuParent.append(menu);
+        $(submenu).append(subitems);
+        $parentMenuItem.append(submenu);
 
-		return this;
-	}
-	
-	$.fn.contextmenu = function(method) {
-		if ( methods[method] ) {	// specific method called
-			return methods[method].apply(this, Array.prototype.slice.call( arguments, 1));
-		} else if (typeof method === 'object' || !method) {	// init
-			return methods.init.apply(this, arguments);
-		} else {
-			$.error('No method ' + method + ' for jQuery context menu.');
-		}
-	}
+        // reattach menu
+        $menuParent.append(menu);
+
+        return this;
+    };
+
+    $.fn.contextmenu = function(method) {
+        if (methods[method]) { // specific method called
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) { // init
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('No method ' + method + ' for jQuery context menu.');
+        }
+    };
 
 })(jQuery);
